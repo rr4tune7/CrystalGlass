@@ -21,8 +21,11 @@ st.dataframe(df)
 search = st.text_input("Введите ключевое слово для поиска:")
 
 if search:
-    # Фильтруем строки, где есть совпадения во всех столбцах, игнорируя пустые значения
-    filtered = df[df.apply(lambda row: row.dropna().astype(str).str.contains(search, case=False).any(), axis=1)]
-    
+    # Убираем строки, где все значения пустые или None
+    df_non_empty = df.dropna(how='all')
+
+    # Фильтруем строки, где есть совпадения во всех столбцах
+    filtered = df_non_empty[df_non_empty.apply(lambda row: row.astype(str).str.contains(search, case=False).any(), axis=1)]
+
     st.subheader(f"Результаты поиска по '{search}'")
     st.dataframe(filtered)
