@@ -21,14 +21,8 @@ st.dataframe(df)
 search = st.text_input("Введите ключевое слово для поиска:")
 
 if search:
-    # Фильтруем строки, где есть совпадения
-    mask = df.apply(lambda row: row.dropna().astype(str).str.contains(search, case=False).any(), axis=1)
-    filtered = df[mask]
-
-    # Создаем копию для подсветки
-    styled = filtered.style.applymap(
-        lambda val: 'background-color: #ffff99' if search.lower() in str(val).lower() else ''
-    )
-
+    # Фильтруем строки, где есть совпадения во всех столбцах, игнорируя пустые значения
+    filtered = df[df.apply(lambda row: row.dropna().astype(str).str.contains(search, case=False).any(), axis=1)]
+    
     st.subheader(f"Результаты поиска по '{search}'")
-    st.dataframe(styled)
+    st.dataframe(filtered)
