@@ -21,15 +21,14 @@ st.dataframe(df)
 search = st.text_input("Введите ключевое слово для поиска в ԱՆՎԱՆՈՒՄ:")
 
 if search:
-    # 1. Фильтруем строки по совпадению в столбце ԱՆՎԱՆՈՒՄ
-    mask_name = df['ԱՆՎԱՆՈՒՄ'].astype(str).str.contains(search, case=False, na=False)
-    df_filtered = df[mask_name]
+    # 1. Поиск в ԱՆՎԱՆՈՒՄ
+    df_filtered = df[df['ԱՆՎԱՆՈՒՄ'].astype(str).str.contains(search, case=False, na=False)]
 
-    # 2. Исключаем столбцы ԱՐԺԵՔ и ՏԵՂԱԴՐՈՒՄ для проверки на пустоту
-    columns_to_check = [col for col in df.columns if col not in ['ԱՐԺԵՔ', 'ՏԵՂԱԴՐՈՒՄ']]
+    # 2. Столбцы, которые нужно проверять на непустые значения (все кроме ԱՐԺԵՔ и ՏԵՂԱԴՐՈՒՄ и АՆՎԱՆՈՒՄ)
+    columns_to_check = [col for col in df.columns if col not in ['ԱՐԺԵՔ', 'ՏԵՂԱԴՐՈՒՄ', 'ԱՆՎԱՆՈՒՄ']]
 
-    # 3. Оставляем только строки, где есть хотя бы одно непустое значение в остальных столбцах
-    df_non_empty = df_filtered[df_filtered[columns_to_check].apply(lambda row: row.notna().any(), axis=1)]
+    # 3. Оставляем только строки, где хотя бы одно значение в этих столбцах не пустое
+    df_non_empty = df_filtered[df_filtered[columns_to_check].notna().any(axis=1)]
 
     st.subheader(f"Результаты поиска по '{search}' в ԱՆՎԱՆՈՒՄ (пустые строки убраны)")
     st.dataframe(df_non_empty)
