@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 st.set_page_config(page_title="Поиск по Excel", layout="wide")
-st.title("🔍 Поиск по ԱՆՎԱՆՈՒՄ с фильтром непустых строк и столбцов")
+st.title("🔍 KMK")
 
 # Ссылка на Excel
 url = "https://www.dropbox.com/scl/fi/8ncsz4wpl94owruvmv4l2/.xlsx?rlkey=hhmc41roywrr5qzmvor5rxlbx&st=wcpqphai&dl=1"
@@ -33,6 +33,7 @@ if search:
     # 4. Оставляем только столбцы, где есть хотя бы одно непустое значение
     df_non_empty = df_non_empty_rows.loc[:, df_non_empty_rows.notna().any(axis=0)]
 
-    st.subheader(f"Результаты поиска по '{search}' в ԱՆՎԱՆՈՒՄ (пустые строки и столбцы убраны)")
+    st.subheader(f"Результаты поиска по '{search}' в ԱՆՎԱՆՈՒՄ")
     st.dataframe(df_non_empty)
+
 
