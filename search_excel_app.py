@@ -30,6 +30,7 @@ if search:
     # 3. Оставляем только строки, где хотя бы одно значение в этих столбцах не пустое
     df_non_empty = df_filtered[df_filtered[columns_to_check].notna().any(axis=1)]
 
-    st.subheader(f"Результаты поиска по '{search}' в ԱՆՎԱՆՈՒՄ (пустые строки убраны)")
+    st.subheader(f"Результаты поиска по '{search}' в ԱՆՎԱՆՈՒՄ")
     st.dataframe(df_non_empty)
+
 
