@@ -27,8 +27,3 @@ search = st.text_input("Введите ключевое слово для пои
 if search:
     if column_to_search == "Все столбцы":
         filtered = df[df.apply(lambda row: row.astype(str).str.contains(search, case=False).any(), axis=1)]
-    else:
-        filtered = df[df[column_to_search].astype(str).str.contains(search, case=False)]
-    
-    st.subheader(f"Результаты поиска по '{search}' в '{column_to_search}'")
-    st.dataframe(filtered)
