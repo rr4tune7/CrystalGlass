@@ -21,18 +21,13 @@ st.dataframe(df)
 search = st.text_input("Введите ключевое слово для поиска:")
 
 if search:
-    # Исключаем столбцы по названию
+    # Исключаем столбцы, которые не хотим искать
     columns_to_search = [col for col in df.columns if col not in ['ԱՐԺԵՔ', 'ՏԵՂԱԴՐՈՒՄ']]
 
-    # Функция для поиска только по непустым значениям
+    # Фильтруем строки, где хотя бы одно значение не None и не пустое
+    df_non_empty = df[df[columns_to_search].apply(lambda row: row.dropna().astype(str).str.strip().any(), axis=1)]
+
+    # Функция для поиска совпадений только в непустых значениях
     def row_contains(row, keyword):
         for val in row:
-            if pd.notna(val) and keyword.lower() in str(val).lower():
-                return True
-        return False
-
-    # Применяем фильтр только к выбранным столбцам
-    filtered = df[df[columns_to_search].apply(lambda row: row_contains(row, search), axis=1)]
-
-    st.subheader(f"Результаты поиска по '{search}' (без столбцов ԱՐԺԵՔ и ՏԵՂԱԴՐՈՒՄ)")
-    st.dataframe(filtered)
+            if pd.notna(val) and str(val).strip() != '' and keyword.lower() in
