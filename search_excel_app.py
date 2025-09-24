@@ -17,13 +17,18 @@ except Exception as e:
 st.subheader("Все данные")
 st.dataframe(df)
 
-# Выбор столбца для поиска
-columns = df.columns.tolist()
-column_to_search = st.selectbox("Выберите столбец для поиска", ["Все столбцы"] + columns)
-
 # Ввод ключевого слова
 search = st.text_input("Введите ключевое слово для поиска:")
 
 if search:
-    if column_to_search == "Все столбцы":
-        filtered = df[df.apply(lambda row: row.astype(str).str.contains(search, case=False).any(), axis=1)]
+    # Фильтруем строки, где есть совпадения
+    mask = df.apply(lambda row: row.dropna().astype(str).str.contains(search, case=False).any(), axis=1)
+    filtered = df[mask]
+
+    # Создаем копию для подсветки
+    styled = filtered.style.applymap(
+        lambda val: 'background-color: #ffff99' if search.lower() in str(val).lower() else ''
+    )
+
+    st.subheader(f"Результаты поиска по '{search}'")
+    st.dataframe(styled)
