@@ -4,7 +4,7 @@ import pandas as pd
 st.set_page_config(page_title="Поиск по Excel", layout="wide")
 st.title("🔍 Мгновенный поиск по Excel")
 
-# Ссылка на Excel
+# Вставь сюда свою прямую ссылку на Excel
 url = "https://www.dropbox.com/scl/fi/8ncsz4wpl94owruvmv4l2/.xlsx?rlkey=hhmc41roywrr5qzmvor5rxlbx&st=wcpqphai&dl=1"
 
 # Загрузка Excel
@@ -21,13 +21,11 @@ st.dataframe(df)
 search = st.text_input("Введите ключевое слово для поиска:")
 
 if search:
-    # Исключаем столбцы, которые не хотим искать
-    columns_to_search = [col for col in df.columns if col not in ['ԱՐԺԵՔ', 'ՏԵՂԱԴՐՈՒՄ']]
+    # Убираем строки, где все значения пустые или None
+    df_non_empty = df.dropna(how='all')
 
-    # Фильтруем строки, где хотя бы одно значение не None и не пустое
-    df_non_empty = df[df[columns_to_search].apply(lambda row: row.dropna().astype(str).str.strip().any(), axis=1)]
+    # Фильтруем строки, где есть совпадения во всех столбцах
+    filtered = df_non_empty[df_non_empty.apply(lambda row: row.astype(str).str.contains(search, case=False).any(), axis=1)]
 
-    # Функция для поиска совпадений только в непустых значениях
-    def row_contains(row, keyword):
-        for val in row:
-            if pd.notna(val) and str(val).strip() != '' and keyword.lower() in
+    st.subheader(f"Результаты поиска по '{search}'")
+    st.dataframe(filtered)
