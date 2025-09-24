@@ -2,10 +2,11 @@ import streamlit as st
 import pandas as pd
 
 st.set_page_config(page_title="Поиск по Excel", layout="wide")
-st.title("🔍 KMK")
+st.title("🔍 Поиск по ԱՆՎԱՆՈՒՄ с фильтром непустых строк и столбцов")
 
 # Ссылка на Excel
-url = "https://www.dropbox.com/scl/fi/8ncsz4wpl94owruvmv4l2/.xlsx?rlkey=hhmc41roywrr5qzmvor5rxlbx&st=wcpqphai&dl=1"
+url = "https://www.dropbox.com/scl/fi/8ncsz4wpl94owruvmv4l2/.xlsx?rlkey=hhmc41roywrr5qzmvor5rxlbx&st=wcpqphai&dl=1
+"
 
 # Загрузка Excel
 try:
@@ -21,16 +22,17 @@ st.dataframe(df)
 search = st.text_input("Введите ключевое слово для поиска в ԱՆՎԱՆՈՒՄ:")
 
 if search:
-    # 1. Поиск в ԱՆՎԱՆՈՒՄ
+    # 1. Поиск в АՆՎԱՆՈՒՄ
     df_filtered = df[df['ԱՆՎԱՆՈՒՄ'].astype(str).str.contains(search, case=False, na=False)]
 
-    # 2. Столбцы, которые нужно проверять на непустые значения (все кроме ԱՐԺԵՔ и ՏԵՂԱԴՐՈՒՄ и АՆՎԱՆՈՒՄ)
-    columns_to_check = [col for col in df.columns if col not in ['ԱՐԺԵՔ', 'ՏԵՂԱԴՐՈՒՄ', 'ԱՆՎԱՆՈՒՄ']]
+    # 2. Столбцы для проверки непустоты (все кроме ԱՐԺԵՔ и ՏԵՂԱԴՐՈՒՄ и ԱՆՎԱՆՈՒՄ)
+    columns_to_check = [col for col in df_filtered.columns if col not in ['ԱՐԺԵՔ', 'ՏԵՂԱԴՐՈՒՄ', 'ԱՆՎԱՆՈՒՄ']]
 
     # 3. Оставляем только строки, где хотя бы одно значение в этих столбцах не пустое
-    df_non_empty = df_filtered[df_filtered[columns_to_check].notna().any(axis=1)]
+    df_non_empty_rows = df_filtered[df_filtered[columns_to_check].notna().any(axis=1)]
 
-    st.subheader(f"Результаты поиска по '{search}' в ԱՆՎԱՆՈՒՄ")
+    # 4. Оставляем только столбцы, где есть хотя бы одно непустое значение
+    df_non_empty = df_non_empty_rows.loc[:, df_non_empty_rows.notna().any(axis=0)]
+
+    st.subheader(f"Результаты поиска по '{search}' в ԱՆՎԱՆՈՒՄ (пустые строки и столбцы убраны)")
     st.dataframe(df_non_empty)
-
-
