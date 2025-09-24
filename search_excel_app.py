@@ -21,11 +21,18 @@ st.dataframe(df)
 search = st.text_input("Введите ключевое слово для поиска:")
 
 if search:
-    # Убираем строки, где все значения пустые или None
-    df_non_empty = df.dropna(how='all')
+    # Выбираем все столбцы кроме последних двух
+    columns_to_search = df.columns[:-2]
 
-    # Фильтруем строки, где есть совпадения во всех столбцах
-    filtered = df_non_empty[df_non_empty.apply(lambda row: row.astype(str).str.contains(search, case=False).any(), axis=1)]
+    # Функция для поиска только по непустым значениям
+    def row_contains(row, keyword):
+        for val in row:
+            if pd.notna(val) and keyword.lower() in str(val).lower():
+                return True
+        return False
 
-    st.subheader(f"Результаты поиска по '{search}'")
+    # Применяем фильтр только к выбранным столбцам
+    filtered = df[df[columns_to_search].apply(lambda row: row_contains(row, search), axis=1)]
+
+    st.subheader(f"Результаты поиска по '{search}' (без последних двух столбцов)")
     st.dataframe(filtered)
