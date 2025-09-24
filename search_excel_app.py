@@ -5,7 +5,7 @@ st.set_page_config(page_title="Поиск по Excel", layout="wide")
 st.title("🔍 Мгновенный поиск по Excel")
 
 # Ссылка на Excel в облаке
-url = "https://www.dropbox.com/scl/fi/meejin368ds2uejz2uu0t/.xlsx?rlkey=zzyjsw804uf2cnhc73v7bc8df&st=mlrr9gre&dl=1"  # вставь свою ссылку
+url = "https://www.dropbox.com/scl/fi/8ncsz4wpl94owruvmv4l2/.xlsx?rlkey=hhmc41roywrr5qzmvor5rxlbx&st=wcpqphai&dl=1"  # вставь свою ссылку
 
 # Загрузка Excel
 try:
@@ -25,5 +25,6 @@ if search:
     filtered = df[df.apply(lambda row: row.astype(str).str.contains(search, case=False).any(), axis=1)]
     st.subheader(f"Результаты поиска по '{search}'")
     st.dataframe(filtered)
+
 
 
