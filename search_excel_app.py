@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 st.set_page_config(page_title="Поиск по Excel", layout="wide")
-st.title("🔍 Поиск по ԱՆՎԱՆՈՒՄ с фильтром непустых строк")
+st.title("🔍 KMK")
 
 # Ссылка на Excel
 url = "https://www.dropbox.com/scl/fi/8ncsz4wpl94owruvmv4l2/.xlsx?rlkey=hhmc41roywrr5qzmvor5rxlbx&st=wcpqphai&dl=1"
@@ -32,3 +32,4 @@ if search:
 
     st.subheader(f"Результаты поиска по '{search}' в ԱՆՎԱՆՈՒՄ (пустые строки убраны)")
     st.dataframe(df_non_empty)
+
