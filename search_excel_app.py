@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 st.set_page_config(page_title="Поиск по Excel", layout="wide")
-st.title("🔍 KMK 18.12.2025" )
+st.title("🔍 KMK 22.12.2025" )
 
 # Ссылка на Excel
 url = "https://www.dropbox.com/scl/fi/8ncsz4wpl94owruvmv4l2/.xlsx?rlkey=hhmc41roywrr5qzmvor5rxlbx&st=wcpqphai&dl=1"
@@ -35,6 +35,7 @@ if search:
 
     st.subheader(f"Результаты поиска по '{search}' в ԱՆՎԱՆՈՒՄ")
     st.dataframe(df_non_empty)
+
 
 
 
