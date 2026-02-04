@@ -5,7 +5,7 @@ st.set_page_config(page_title="Поиск по Excel", layout="wide")
 st.title("🔍 KMK 30.01.2026")
 
 # Ссылка на Excel
-url = "https://www.dropbox.com/scl/fi/kgba4pibh4nqzt9fo42l3/.xlsx?rlkey=2qs2s9uemmz5o8a0mqax5eahj&st=o7enux09&dl=1"
+url = "https://www.dropbox.com/scl/fi/kgba4pibh4nqzt9fo42l3/.xlsx?rlkey=hs1jfakol75fa8sdujngvejr0&st=o18s5908&dl=1"
 
 # Загрузка Excel
 try:
@@ -32,6 +32,7 @@ if search:
 
     st.subheader(f"Результаты поиска по '{search}' в ԱՆՎԱՆՈՒՄ")
     st.dataframe(df_non_empty)
+
 
 
 
