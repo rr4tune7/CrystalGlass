@@ -94,12 +94,11 @@ search = st.text_input("Введите ключевое слово для пои
 
 if search:
     # 1. Поиск в ԱՆՎԱՆՈՒՄ
-    df_filtered = df[
-    df['ԱՆՎԱՆՈՒՄ'].apply(
-        lambda value: fuzzy_match(
+   df_filtered = df[
+    df["ԱՆՎԱՆՈՒՄ"].apply(
+        lambda value: smart_exact_search(
             value,
-            search,
-            similarity=75
+            search
         )
     )
 ]
