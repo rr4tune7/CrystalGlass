@@ -66,7 +66,7 @@ if search:
         lambda value: fuzzy_match(
             value,
             search,
-            similarity=75
+            similarity=90
         )
     )
 ]
