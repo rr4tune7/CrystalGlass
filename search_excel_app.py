@@ -5,7 +5,7 @@ st.set_page_config(page_title="Поиск по Excel", layout="wide")
 st.title("🔍 KMK 28.07.2026")
 
 # Ссылка на Excel
-url = "https://www.dropbox.com/scl/fi/ofvrt8rzmtw4ttxu1ui9p/.xlsx?rlkey=t5qx9wv2q5scmfbczbu4lvk8z&st=p3btq2ji&dl=1"
+url = "https://www.dropbox.com/scl/fi/w2qukfr4frqchaaerf1vk/.xlsx?rlkey=qddf4fxqf4n4vyzhnhsavokkf&st=cx02jqav&dl=1"
 
 # Загрузка Excel
 try:
