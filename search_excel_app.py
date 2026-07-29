@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from rapidfuzz import fuzz
+import re
 
 st.set_page_config(page_title="Поиск по Excel", layout="wide")
 st.title("🔍 KMK 28.07.2026")
@@ -18,43 +18,76 @@ except Exception as e:
 st.subheader("Все данные")
 st.dataframe(df)
 
-def normalize_text(value):
+def normalize_word(word):
+    """
+    Преобразует слово в упрощённое написание.
+    Например:
+    rogue   -> ruj
+    camry   -> camri
+    alphard -> alfard
+    """
+
+    word = str(word).lower().strip()
+
+    # Удаляем знаки и оставляем только буквы и цифры
+    word = re.sub(r"[^a-zа-яё0-9]", "", word)
+
+    # Частые варианты написания
+    word = word.replace("ph", "f")
+    word = word.replace("ck", "k")
+
+    # Rogue -> ruj
+    word = re.sub(r"ogue$", "uj", word)
+
+    # Например: range -> ranj
+    word = re.sub(r"ge$", "j", word)
+
+    # Camry -> camri
+    word = re.sub(r"y$", "i", word)
+
+    return word
+
+
+def normalize_words(value):
+    """
+    Разделяет название на слова
+    и нормализует каждое слово.
+    """
+
     if pd.isna(value):
-        return ""
+        return []
 
-    value = str(value).lower().strip()
+    text = str(value).lower()
 
-    return "".join(
-        symbol for symbol in value
-        if symbol.isalnum() or symbol.isspace()
+    words = re.findall(
+        r"[a-zа-яё0-9]+",
+        text
     )
 
-
-def fuzzy_match(value, search_text, similarity=75):
-    value = normalize_text(value)
-    search_text = normalize_text(search_text)
-
-    if not value or not search_text:
-        return False
-
-    # Сначала проверяем обычное совпадение
-    if search_text in value:
-        return True
-
-    # Сравниваем запрос с каждым словом
-    words = value.split()
-
-    scores = [
-        fuzz.ratio(search_text, word)
+    return [
+        normalize_word(word)
         for word in words
+        if normalize_word(word)
     ]
 
-    # Также сравниваем со всем названием
-    scores.append(
-        fuzz.partial_ratio(search_text, value)
-    )
 
-    return max(scores) >= similarity
+def smart_exact_search(value, search_text):
+    """
+    Строгий поиск после преобразования слов.
+    Все введённые слова должны присутствовать
+    в названии товара.
+    """
+
+    excel_words = normalize_words(value)
+    search_words = normalize_words(search_text)
+
+    if not excel_words or not search_words:
+        return False
+
+    return all(
+        search_word in excel_words
+        for search_word in search_words
+    )
 
 # Ввод ключевого слова
 search = st.text_input("Введите ключевое слово для поиска в ԱՆՎԱՆՈՒՄ:")
