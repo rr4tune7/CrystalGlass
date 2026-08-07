@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 st.set_page_config(page_title="Поиск по Excel", layout="wide")
-st.title("🔍 KMK 28.07.2026")
+st.title("🔍 KMK 06.08.2026")
 
 # Ссылка на Excel
 url = "https://www.dropbox.com/scl/fi/w2qukfr4frqchaaerf1vk/.xlsx?rlkey=qddf4fxqf4n4vyzhnhsavokkf&st=cx02jqav&dl=1"
